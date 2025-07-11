@@ -1,0 +1,1 @@
+.container{margin:100px auto;width:500px;display:flex;justify-content:space-between}.box-grid{box-sizing:border-box;display:grid;grid-template-columns:repeat(4,80px);grid-template-rows:repeat(4,80px);gap:2px}.cell{width:80px;height:80px;background-color:#fff;border:1px solid #858585}.button{height:30px}.cell.active{background-color:#000}
