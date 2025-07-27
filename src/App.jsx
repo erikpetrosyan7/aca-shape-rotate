@@ -1,47 +1,46 @@
 import { useState } from 'react';
 import './App.scss';
 
-const initialBox = [
-	[false, false, false, false],
-	[false, false, false, false],
-	[false, false, false, false],
-	[false, false, false, false],
-];
+const width = 4;
+const height = 4;
 
 function App() {
-	const [box, setBox] = useState(initialBox);
-	const [rotation, setRotation] = useState(0);
+	const [board, setBoard] = useState(
+		Array(5)
+			.fill(null)
+			.map(() => Array(5).fill(false))
+	);
 
-	const rotate = () => {
-		setRotation(prev => (prev + 90) % 360);
-	};
-
-	function handleClick(rowIdx, colIdx) {
-		const newBox = box.map((row, i) =>
-			row.map((cell, j) => (i === rowIdx && j === colIdx ? !cell : cell))
+	function handleClick(rowIndex, colIndex) {
+		const newBoard = board.map((row, i) =>
+			row.map((cell, j) => (i === rowIndex && j === colIndex ? !cell : cell))
 		);
-		setBox(newBox);
+		setBoard(newBoard);
+	}
+	function rotateMatrix(matrix) {
+		return matrix[0].map((_, colIndex) =>
+			matrix.map(row => row[colIndex]).reverse()
+		);
+	}
+	function handleRotate() {
+		const rotated = rotateMatrix(board);
+		setBoard(rotated);
 	}
 
 	return (
 		<div className='container'>
-			<div
-				className='box-grid'
-				style={{
-					transform: `rotate(${rotation}deg)`,
-				}}
-			>
-				{box.map((row, rowIdx) =>
-					row.map((cell, colIdx) => (
+			<div className='box-grid'>
+				{board.map((row, rowIndex) =>
+					row.map((cell, colIndex) => (
 						<div
-							key={`${rowIdx}-${colIdx}`}
+							key={`${rowIndex}-${colIndex}`}
 							className={`cell ${cell ? 'active' : ''}`}
-							onClick={() => handleClick(rowIdx, colIdx)}
+							onClick={() => handleClick(rowIndex, colIndex)}
 						/>
 					))
 				)}
 			</div>
-			<button className='button' onClick={rotate}>
+			<button className='button' onClick={handleRotate}>
 				Rotate 90°
 			</button>
 		</div>
